@@ -32,14 +32,14 @@ describe('Test IO', function () {
   });
 
   it('should read number', async function () {
-    let stdin = stringToSteam(' 123 \n 456   \n 123.45 1')
+    let stdin = stringToSteam(' 123 \n -456   \n 123.45 1')
 
     let IO = input(stdin)
 
     await IO.start()
 
     IO.readNumber().should.be.eq(123)
-    IO.readNumber().should.be.eq(456)
+    IO.readNumber().should.be.eq(-456)
     IO.readNumber().should.be.eq(123.45)
     IO.readNumber().should.be.eq(1)
   });

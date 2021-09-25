@@ -58,7 +58,11 @@ export class Input implements InputInterface {
           break;
 
         for (let i = this._chunkOffset; i < this._chunk.length; i++) {
-          if ((this._chunk[i] >= 48 && this._chunk[i] <= 57) || this._chunk[i] === 46) {
+          if (
+            (this._chunk[i] >= 48 && this._chunk[i] <= 57) ||
+            (this._chunk[i] === 46) ||
+            (pos === 0 && this._chunk[i] === 45)
+          ) {
             readChunk[pos++] = this._chunk[i];
             found = true;
           } else {
