@@ -1,0 +1,19 @@
+{
+  "name": "@robocontest/io",
+  "version": "1.0.0",
+  "description": "Special nodejs I/O handler for robocontest.uz",
+  "main": "build/index.js",
+  "repository": "https://github.com/robocontest/nodejs-io",
+  "author": "Adizbek Ergashev",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chai": "^4.2.22",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.10.0",
+    "chai": "^4.3.4",
+    "mocha": "^9.1.2",
+    "nyc": "^15.1.0",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.3"
+  }
+}
