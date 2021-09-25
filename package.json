@@ -1,11 +1,19 @@
 {
   "name": "@robocontest/io",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Special nodejs I/O handler for robocontest.uz",
-  "main": "build/index.js",
-  "repository": "https://github.com/robocontest/nodejs-io",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robocontest/nodejs-io.git"
+  },
   "author": "Adizbek Ergashev",
   "license": "MIT",
+  "private": false,
+  "scripts": {
+    "prepare": "tsc",
+    "prepare-npm": "npm pack --dry-run"
+  },
   "devDependencies": {
     "@types/chai": "^4.2.22",
     "@types/mocha": "^9.0.0",
@@ -15,5 +23,14 @@
     "nyc": "^15.1.0",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.3"
+  },
+  "types": "./lib/index.d.ts",
+  "bugs": {
+    "url": "https://github.com/robocontest/nodejs-io/issues"
+  },
+  "homepage": "https://github.com/robocontest/nodejs-io#readme",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
   }
 }

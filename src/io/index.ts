@@ -1,3 +1,3 @@
 import io from "./io";
 
-export = io;
+export default io;
