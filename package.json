@@ -1,6 +1,6 @@
 {
   "name": "@robocontest/io",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Special nodejs I/O handler for robocontest.uz",
   "main": "lib/index.js",
   "repository": {
