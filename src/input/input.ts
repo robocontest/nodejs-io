@@ -9,6 +9,8 @@ const CHAR_SPACE = 32;
 export class Input implements InputInterface {
   private input: Readable;
 
+  private _ended = false;
+
   private _chunk: Buffer;
   private _chunkOffset = 0;
 
@@ -16,24 +18,8 @@ export class Input implements InputInterface {
     this.input = input;
     this._chunk = Buffer.alloc(0)
 
-    this.input.on('pause', () => {
-      // console.log('PAUSED')
-    })
-
-    this.input.on('resume', () => {
-      // console.log('resume')
-    })
-
     this.input.on('close', () => {
-      // console.log('close')
-    })
-
-    this.input.on('end', () => {
-      // console.log('end')
-    })
-
-    this.input.on('data', (chunk: Buffer) => {
-      // console.log('NEW DATA', chunk.length)
+      this._ended = true;
     })
   }
 
@@ -43,7 +29,7 @@ export class Input implements InputInterface {
     }))
   }
 
-  readNumber(): number {
+  async readNumber(): Promise<number> {
     let readChunk = [];
     let pos = 0;
     let found = false;
@@ -51,7 +37,8 @@ export class Input implements InputInterface {
     main:
       while (true) {
         if (this._chunkOffset + 1 >= this._chunk.length) {
-          this._readChunk();
+          this._chunk = await this._asyncRead();
+          this._chunkOffset = 0;
         }
 
         if (this._chunk === null)
@@ -77,7 +64,7 @@ export class Input implements InputInterface {
     return parseFloat(Buffer.from(readChunk).toString('utf8'));
   }
 
-  read(): string {
+  async read(): Promise<string> {
     let readChunk = [];
     let pos = 0;
     let foundWord = false;
@@ -85,7 +72,8 @@ export class Input implements InputInterface {
     main:
       while (true) {
         if (this._chunkOffset + 1 >= this._chunk.length) {
-          this._readChunk();
+          this._chunk = await this._asyncRead();
+          this._chunkOffset = 0;
         }
 
         if (this._chunk === null)
@@ -107,14 +95,15 @@ export class Input implements InputInterface {
     return Buffer.from(readChunk).toString('utf8');
   }
 
-  readLine(): string {
+  async readLine(): Promise<string> {
     let readChunk = [];
     let pos = 0;
 
     main:
       while (true) {
         if (this._chunkOffset + 1 >= this._chunk.length) {
-          this._readChunk();
+          this._chunk = await this._asyncRead();
+          this._chunkOffset = 0;
         }
 
         if (this._chunk === null)
@@ -138,9 +127,15 @@ export class Input implements InputInterface {
     return Buffer.from(readChunk).toString('utf8');
   }
 
-  private _readChunk() {
-    this._chunk = this.input.read();
-    this._chunkOffset = 0;
+
+  private async _asyncRead(): Promise<Buffer> {
+    return new Promise((resolve) => {
+      this.input.once('data', ((chunk: Buffer) => {
+        resolve(chunk)
+      }))
+
+      this.input.read()
+    });
   }
 }
 

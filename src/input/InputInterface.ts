@@ -1,7 +1,7 @@
 export default interface InputInterface {
-  readLine(): string;
+  readLine(): Promise<string>;
 
-  read(): string;
+  read(): Promise<string>;
 
-  readNumber(): number;
+  readNumber(): Promise<number>;
 }

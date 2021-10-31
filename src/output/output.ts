@@ -9,9 +9,11 @@ export class Output {
   }
 
   write(contents: any) {
-    if (contents instanceof String || contents instanceof Buffer || contents instanceof Uint8Array) {
+    if (typeof contents === 'string' || contents instanceof String) {
       this.writable.write(contents)
-    } else if (contents instanceof Number) {
+    } else if (contents instanceof Buffer) {
+      this.writable.write(contents.toString())
+    } else if (typeof contents === 'number' || contents instanceof Number) {
       this.writable.write(contents.toString())
     } else {
       this.writable.write(contents.toString(), (err) => {

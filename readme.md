@@ -5,31 +5,40 @@
 ```js
 let io = require('@robocontest/io');
 
-const {input, output} = io(process.stdin, process.stdout)
+const {input, output} = io(process.stdin, process.stdout);
 
-input.start().then(() => {
-  let a = input.readNumber()
-  let b = input.readNumber()
+input.start().then(async () => {
+  let a = await input.readNumber();
+  let b = await input.readNumber();
 
-  output.write(a + b)
-  output.close();
-})
+  output.write(a + b);
+  output.close(); // close is mandatory if you want if streams correctly flushed to file
+});
 ```
 
 ```js
-const fs = require('fs');
 let io = require('@robocontest/io');
 
-const {input, output} = io(
-  fs.createReadStream('input.txt'),
-  fs.createWriteStream('output.txt')
-)
+const {input, output} = io('input.txt', 'output.txt');
 
-input.start().then(() => {
-  let a = input.readNumber()
-  let b = input.readNumber()
+input.start().then(async () => {
+  let a = await input.readNumber();
+  let b = await input.readNumber();
 
   output.write(a + b)
   output.close();
-})
+});
+
+```
+Shorter import
+```js
+const {input, output} = require('@robocontest/io')(process.stdin, process.stdout);
+
+input.start().then(async () => {
+  let a = await input.readNumber();
+  let b = await input.readNumber();
+
+  output.write(a + b);
+  output.close();
+});
 ```
