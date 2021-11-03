@@ -32,7 +32,7 @@ describe('Test IO', function () {
   });
 
   it('should read number', async function () {
-    let stdin = stringToSteam(' 123 \n -456   \n 123.45 1')
+    let stdin = stringToSteam(' 123 \n -456   \n 123.45 1 51')
 
     let IO = input(stdin);
 
@@ -42,6 +42,7 @@ describe('Test IO', function () {
     (await IO.readNumber()).should.be.eq(-456);
     (await IO.readNumber()).should.be.eq(123.45);
     (await IO.readNumber()).should.be.eq(1);
+    (await IO.readBigInt()).should.be.eq(51n);
   });
 
   it('should test output', async function () {

@@ -5,6 +5,10 @@ import {Buffer} from 'buffer';
 const CHAR_SLASH_R = 13;
 const CHAR_SLASH_N = 10;
 const CHAR_SPACE = 32;
+const CHAR_MINUS = 45;
+const CHAR_DOT = 46;
+const CHAR_0 = 48;
+const CHAR_9 = 57;
 
 export class Input implements InputInterface {
   private input: Readable;
@@ -46,9 +50,9 @@ export class Input implements InputInterface {
 
         for (let i = this._chunkOffset; i < this._chunk.length; i++) {
           if (
-            (this._chunk[i] >= 48 && this._chunk[i] <= 57) ||
-            (this._chunk[i] === 46) ||
-            (pos === 0 && this._chunk[i] === 45)
+            (this._chunk[i] >= CHAR_0 && this._chunk[i] <= CHAR_9) ||
+            (this._chunk[i] === CHAR_DOT) ||
+            (pos === 0 && this._chunk[i] === CHAR_MINUS)
           ) {
             readChunk[pos++] = this._chunk[i];
             found = true;
@@ -93,6 +97,40 @@ export class Input implements InputInterface {
       }
 
     return Buffer.from(readChunk).toString('utf8');
+  }
+
+  async readBigInt(): Promise<BigInt> {
+    let readChunk = [];
+    let pos = 0;
+    let found = false;
+
+    main:
+      while (true) {
+        if (this._chunkOffset + 1 >= this._chunk.length) {
+          this._chunk = await this._asyncRead();
+          this._chunkOffset = 0;
+        }
+
+        if (this._chunk === null)
+          break;
+
+        for (let i = this._chunkOffset; i < this._chunk.length; i++) {
+          if (
+            (this._chunk[i] >= CHAR_0 && this._chunk[i] <= CHAR_9) ||
+            (pos === 0 && this._chunk[i] === CHAR_MINUS)
+          ) {
+            readChunk[pos++] = this._chunk[i];
+            found = true;
+          } else {
+            this._chunkOffset = i + 1;
+
+            if (found)
+              break main;
+          }
+        }
+      }
+
+    return BigInt(Buffer.from(readChunk).toString('utf8'));
   }
 
   async readLine(): Promise<string> {

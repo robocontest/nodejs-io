@@ -4,4 +4,6 @@ export default interface InputInterface {
   read(): Promise<string>;
 
   readNumber(): Promise<number>;
+
+  readBigInt(): Promise<BigInt>;
 }
