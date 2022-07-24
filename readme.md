@@ -42,3 +42,20 @@ input.start().then(async () => {
   output.close();
 });
 ```
+
+
+All methods:
+```js
+const {input, output} = require('@robocontest/io')(process.stdin, process.stdout);
+
+input.start().then(async () => {
+  let a = await input.read(); // a word
+  let b = await input.readLine(); // a line
+  let c = await input.readNumber(); // a number
+  let d = await input.readNumberArray(c); // a number array
+  let e = await input.readBigInt(); // a bigint
+
+  output.close();
+});
+```
+

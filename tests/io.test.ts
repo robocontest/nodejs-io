@@ -45,6 +45,16 @@ describe('Test IO', function () {
     (await IO.readBigInt()).should.be.eq(51n);
   });
 
+  it('should read number array', async function () {
+    let stdin = stringToSteam(' 123 \n -456   \n 123.45 1 51')
+
+    let IO = input(stdin);
+
+    await IO.start();
+
+    (await IO.readNumberArray(5)).should.have.members([123, -456, 123.45, 1, 51]);
+  });
+
   it('should test output', async function () {
     let out = new PassThrough()
     let writer = output(out)

@@ -175,12 +175,20 @@ export class Input implements InputInterface {
       this.input.read()
     });
   }
+
+  async readNumberArray(n: number): Promise<number[]> {
+    const arr = [];
+
+    for (let i = 0; i < n; i++) {
+      arr.push(await this.readNumber())
+    }
+
+    return arr;
+  }
 }
 
 function input(input: Readable): Input {
   return new Input(input)
 }
-
-module.exports = input;
 
 export default input;
