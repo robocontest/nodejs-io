@@ -46,13 +46,14 @@ describe('Test IO', function () {
   });
 
   it('should read number array', async function () {
-    let stdin = stringToSteam(' 123 \n -456   \n 123.45 1 51')
-
-    let IO = input(stdin);
-
+    let IO = input(stringToSteam(' 123 \n -456   \n 123.45 1 51'))
     await IO.start();
-
     (await IO.readNumberArray(5)).should.have.members([123, -456, 123.45, 1, 51]);
+
+    IO = input(stringToSteam(' 123 \n -456   \n 123.45 1 51'))
+    await IO.start();
+    (await IO.readNumberArray([5])).should.have.members([123, -456, 123.45, 1, 51]);
+
   });
 
   it('should read multi dimensional array', async function () {
