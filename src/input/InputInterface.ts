@@ -5,7 +5,7 @@ export default interface InputInterface {
 
   readNumber(): Promise<number>;
 
-  readNumberArray(n: number): Promise<number[]>;
+  readNumberArray(shape: number|number[]): Promise<number[]>;
 
   readBigInt(): Promise<BigInt>;
 }

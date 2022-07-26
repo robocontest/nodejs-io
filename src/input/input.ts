@@ -176,14 +176,29 @@ export class Input implements InputInterface {
     });
   }
 
-  async readNumberArray(n: number): Promise<number[]> {
-    const arr = [];
+  /**
+   * @param shape n if vector array [3,4] if matrix
+   */
+  async readNumberArray(shape: number | number[]): Promise<number[]> {
+    let dims = typeof shape === 'number' ? [shape] : shape;
 
-    for (let i = 0; i < n; i++) {
-      arr.push(await this.readNumber())
+    const read = async (currentDimension: number): Promise<number[]> => {
+      let curArr: any[] = [];
+
+      if (currentDimension + 1 != dims.length) {
+        for (let x = 0; x < dims[currentDimension]; x++) {
+          curArr.push(await read(currentDimension + 1))
+        }
+      } else {
+        for (let x = 0; x < dims[currentDimension]; x++) {
+          curArr.push(await this.readNumber())
+        }
+      }
+
+      return curArr;
     }
 
-    return arr;
+    return await read(0)
   }
 }
 

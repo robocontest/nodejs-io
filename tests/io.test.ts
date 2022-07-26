@@ -55,6 +55,16 @@ describe('Test IO', function () {
     (await IO.readNumberArray(5)).should.have.members([123, -456, 123.45, 1, 51]);
   });
 
+  it('should read multi dimensional array', async function () {
+    let IO = input(stringToSteam('1 2 3\n4 5 6   \n 7 8 9'));
+    await IO.start();
+    (await IO.readNumberArray([3, 3])).should.deep.eq([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+
+    IO = input(stringToSteam('1 2 3\n4 5 6   \n 7 8'));
+    await IO.start();
+    (await IO.readNumberArray([2, 2, 2])).should.deep.eq([[[1, 2], [3, 4]], [[5, 6], [7, 8]]]);
+  });
+
   it('should test output', async function () {
     let out = new PassThrough()
     let writer = output(out)
