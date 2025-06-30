@@ -25,7 +25,7 @@ input.start().then(async () => {
   let a = await input.readNumber();
   let b = await input.readNumber();
 
-  output.write(a + b)
+  output.write(a + b);
   output.close();
 });
 
